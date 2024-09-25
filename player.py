@@ -20,7 +20,7 @@ class Player(CircleShape):
 
     #Draw the player sprite
     def draw(self, screen):
-        pygame.draw.polygon(screen, 'white', self.triangle(), width=2)
+        pygame.draw.polygon(screen, 'green', self.triangle(), width=2)
 
     #Ability for user to rotate player sprite
     def rotate(self, delta_time):

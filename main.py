@@ -1,6 +1,9 @@
+import sys
 import pygame
 from constants import *
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 def main():
 
@@ -16,11 +19,20 @@ def main():
 	#Create sprite groups - DRY + CLEAN code
 	updatable = pygame.sprite.Group() 									
 	drawable = pygame.sprite.Group()
+	asteroids = pygame.sprite.Group()
 
-	#Add groups to Player class
+	#Add sprite groups to Player class
 	Player.containers = (updatable, drawable)
 	#Generate player sprite at center of window
 	player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+
+	#Add sprite groups to Asteroid class
+	Asteroid.containers = (asteroids, updatable, drawable)
+
+	#Add sprite group to AsteroidField
+	AsteroidField.containers = (updatable)
+	#Generate AsteroidField
+	asteroidfield = AsteroidField()
 
 	#Infinite loop - Generate gaming window.
 	while True:
@@ -31,6 +43,12 @@ def main():
 		#Loop over objects in groups and apply relevant object method
 		for obj in updatable:
 			obj.update(dt)
+
+		#Check to see if the player collides with an asteroid
+		for obj in asteroids:
+			if obj.collision(player):
+				print('Game over!')
+				sys.exit()
 
 		for obj in drawable:
 			obj.draw(screen)
