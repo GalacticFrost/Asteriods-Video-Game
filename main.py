@@ -6,28 +6,47 @@ def main():
 
 	pygame.init()
 
-	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))		#Generate a game window
+	#Generate a game window
+	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+	#Create a clock instance - used for FPS later	
 	clock = pygame.time.Clock()
+	#Delta time
 	dt = 0
 
-	player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)					#Generate the player 
+	#Create sprite groups - DRY + CLEAN code
+	updatable = pygame.sprite.Group() 									
+	drawable = pygame.sprite.Group()
+
+	#Add groups to Player class
+	Player.containers = (updatable, drawable)
+	#Generate player sprite at center of window
+	player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
 	#Infinite loop - Generate gaming window.
 	while True:
 		
-		screen.fill('black')					#Fill Screen Background
-		player.draw(screen)						#Draw player sprite every frame
-		pygame.display.flip()					#Refresh the display
+		#Fill the game window black - Background
+		screen.fill('black')
+		
+		#Loop over objects in groups and apply relevant object method
+		for obj in updatable:
+			obj.update(dt)
 
+		for obj in drawable:
+			obj.draw(screen)
+
+		#Links the close window button ('x') to terminate the game window
 		for event in pygame.event.get():
-			if event.type == pygame.QUIT:		#Close window - 'x' button	
+			if event.type == pygame.QUIT:	
 				return
-			
-		dt = clock.tick(60)/1000				#Set FPS to 60
 
+		#Update the display with the above code	
+		pygame.display.flip()
+		#Set the games FPS to 60
+		dt = clock.tick(60)/1000
 
-	print('Starting asteroids!')
-	print(f'Screen width: {SCREEN_WIDTH}\nScreen height: {SCREEN_HEIGHT}')
+	# print('Starting asteroids!')
+	# print(f'Screen width: {SCREEN_WIDTH}\nScreen height: {SCREEN_HEIGHT}')
 
 if __name__ == '__main__':
 	main()
