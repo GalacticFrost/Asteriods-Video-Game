@@ -48,8 +48,14 @@ def main():
 		for obj in updatable:
 			obj.update(dt)
 
-		#Check to see if the player collides with an asteroid
+		#Loop over asteroids, check for collision between player and or bullets
 		for obj in asteroids:
+
+			for bullet in bullets:
+				if obj.collision(bullet):
+					bullet.kill()
+					obj.split()
+	
 			if obj.collision(player):
 				print('Game over!')
 				sys.exit()
