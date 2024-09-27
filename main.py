@@ -28,7 +28,7 @@ def main():
 	#Generate player sprite at center of window
 	player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 	#Generate player bullets
-	Shot.containers = (bullets)
+	Shot.containers = (bullets, updatable, drawable)
 
 	#Add sprite groups to Asteroid class
 	Asteroid.containers = (asteroids, updatable, drawable)

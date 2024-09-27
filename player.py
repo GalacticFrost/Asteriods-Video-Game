@@ -9,6 +9,7 @@ class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
+        self.shot_cooldown = 0
 
     #Changes the look of the player sprite to that of a triangle
     def triangle(self):
@@ -32,11 +33,16 @@ class Player(CircleShape):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * delta_time
 
+    #Ability for the user to shoot. Along with a cooldown between shots.
     def shoot(self):
-        bullet = Shot(self.position)
-
+        if self.shot_cooldown <= 0:
+            shot = Shot(self.position.x, self.position.y)
+            shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+            self.shot_cooldown = PLAYER_SHOT_COOLDOWN
+            
     #Tie rotation of player sprite to key input
     def update(self, delta_time):
+        self.shot_cooldown -= delta_time
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
