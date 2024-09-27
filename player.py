@@ -1,6 +1,7 @@
 import pygame
 from circleshape import CircleShape
 from constants import *
+from bullets import Shot
 
 #Inherent hitbox from circle sprite
 class Player(CircleShape):
@@ -31,6 +32,9 @@ class Player(CircleShape):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * delta_time
 
+    def shoot(self):
+        bullet = Shot(self.position)
+
     #Tie rotation of player sprite to key input
     def update(self, delta_time):
         keys = pygame.key.get_pressed()
@@ -43,4 +47,6 @@ class Player(CircleShape):
             self.move(delta_time)
         if keys[pygame.K_s]:
             self.move(delta_time/-1)
+        if keys[pygame.K_SPACE]:
+            self.shoot()
     
